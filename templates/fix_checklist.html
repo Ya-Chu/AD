@@ -1,0 +1,1473 @@
+<!-- check_NA正常 使用plain js一鍵生成-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>維修保養自主檢查表</title>
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="../static/css/test.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="../static/vendor/datatables/dataTables.bootstrap4.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-info sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="menu.php">
+                <div class="sidebar-brand-icon d-flex d-md-none"><i class="fas fa-fw fa-home"></i></div>
+                <div class="sidebar-brand-text d-xl-flex d-none mx-0">技術服務系統</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#authPages"
+                    aria-expanded="false" aria-controls="authPages">
+                    <i class="fas fa-fw fa-key"></i>
+                    <span>權限管理</span>
+                </a>
+                <div id="authPages" class="collapse " aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">權限群組</a>
+                        <a class="collapse-item" href="#">權限設定</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userPages"
+                    aria-expanded="true" aria-controls="userPages">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>使用者及訂單管理</span>
+                </a>
+                <div id="userPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="user.php">使用者創建</a>
+                        <a class="collapse-item" href="pc_ctrl.php">生產資料建置</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#QCPages"
+                    aria-expanded="false" aria-controls="QCPages">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>品質控管</span>
+                </a>
+                <div id="QCPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="qc_generate.php">產生完整報表</a>
+                        <a class="collapse-item" href="qc_product.php">產品資料表</a>
+                        <a class="collapse-item" href="qc_dbt.php">動平衡資料</a>
+                        <a class="collapse-item" href="QC_testing.php">風機性能測試（曲線）</a>
+                        <a class="collapse-item" href="QC_Warranty.php">保固書</a>
+                        <a class="collapse-item" href="upload_file_page.php">上傳文件</a>
+                        <a class="collapse-item" href="qc_cover.php">送風機設備資料封面</a>
+                        <a class="collapse-item" href="#">產出報告書</a>
+                        <a class="collapse-item" href="error_report.php">場內異常註記</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#FixPages"
+                    aria-expanded="true" aria-controls="FixPages">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>維修保養</span>
+                </a>
+                <div id="FixPages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="Fix_ticket.php">派工單</a>
+                        <a class="collapse-item" href="Fix_record.html">維修保養紀錄</a>
+                        <a class="collapse-item active" href="#">維修保養自主檢查表</a>
+                        <a class="collapse-item" href="#">維修保養報告</a>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">維修人員小明</span>
+                                <img class="img-profile rounded-circle"
+                                    src="../static/img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/templates/login.html" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    登出
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Page Content Start-->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">維修保養自主檢查表</h1>
+                    <!--divList Start-->
+                    <div class="row" id="divList">
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <form id="form_List" name="form_List" action="Fix_checklist_Edit.php" method="POST" onsubmit="check_delete();return false;">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-primary" href="Fix_checklist.php?FDNewsState=Insert">新增維修保養紀錄</a>
+                                            <input type="hidden" name="stateDelete" value="Delete" />
+                                            <input class="btn btn-danger" type="submit" name="Submit" value="刪除勾選資料"/>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" onclick="check_all(this,'checkboxes')">全選</th>
+                                                        <th>工令號碼</th>
+                                                        <th>風機編號</th>
+                                                        <th>客戶名稱</th>
+                                                        <th>服務日期</th>
+                                                        <th>功能項</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>1234-5678</td>
+                                                        <td>OC-2229</td>
+                                                        <td>XXX公司</td>
+                                                        <td>2023/5/28</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_checklist.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--divList End-->
+
+                    <!--divInsert Start-->
+                    <div class="row justify-content-center" id="divInsert">
+                        <div class="col-md-10">
+                            <div class="card shadow mb-4">
+                                 <form id="form_Insert" name="form_Insert" action="fix_checklist_Edit.php" method="POST">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-success btn-label" href="Fix_checklist.php?FDNewsState=List" style="font-size:18px"><i class="fa fa-arrow-left fa-x"></i>&nbsp;返回列表</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mt-4 mb-5 h1">維修保養自主檢查表</div>
+                                        <div class="row justify-content-center mb-4"><span class="border border-info w-75 d-none d-lg-inline"></span></div>
+                                            <!-- 表頭開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">客戶名稱</label>
+                                                        <input type="text" class="form-control" id="Icustomer" name="Icustomer" aria-describedby="" value="" placeholder="請輸入客戶名稱" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Iworknumber" class="form-label">工令號碼</label>
+                                                        <input type="text" class="form-control" name="Iworknumber" id="Iworknumber" aria-describedby="" value="" placeholder="請輸入工令號碼" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">客戶地址</label>
+                                                        <input type="text" class="form-control" id="" name="Iaddress" aria-describedby="" value="" placeholder="請輸入客戶地址" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Ifan_type" class="form-label">風機型號</label>
+                                                        <input type="text" class="form-control" name="Ifan_type" id="Ifan_type" aria-describedby="" value="" placeholder="請輸入風機型號" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">聯絡人</label>
+                                                        <input type="text" class="form-control" id="" name="Ip_info" aria-describedby="" value="" placeholder="請輸入聯絡人" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Ifannumber" class="form-label">風機編號</label>
+                                                        <input type="text" class="form-control" id="Ifannumber" name="Ifannumber" aria-describedby="" value="" placeholder="請輸入風機編號" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-12 my-4" >
+                                                        <label for="G_id" class="form-label">服務日期</label>
+                                                        <div class="row">
+                                                            <div class="col-auto"><input class="form-control" type="date" onchange="timeInterval()"  name="Iservice_data_f" required></div>
+                                                            <div class="d-none d-lg-inline col-auto h3">~</div>
+                                                            <div class="d-flex d-lg-none h6 mx-auto my-2">至</div>
+                                                            <div class="col-auto"><input class="form-control" type="date" onchange="timeInterval()"  name="Iservice_data_t" required></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 表頭結束 -->
+
+                                            <!-- 風車檢查表開始 -->
+                                        <!-- <form id="check_list" name="form" action="fix_checklist.php" method="POST"> -->
+                                            <section class="container">
+                                                <p class="mt-5">風車檢查表</p>
+                                                <div class="row justify-content-center mt-4 mb-2">
+                                                    <div class="col">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover text-center" id="blowerTable"> 
+                                                                <thead> 
+                                                                    <tr> 
+                                                                        <th class="col-4 bg-secondary text-light">風車檢查細項</th> 
+                                                                        <th class="col-2 bg-secondary text-light">無配件</th> 
+                                                                        <th class="col-3 bg-secondary text-light">是否乾淨</th> 
+                                                                        <th class="col-3 bg-secondary text-light">配件功能</th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody>
+                                                                    <tr> 
+                                                                        <td class="col-4">入口風門</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input In_damper" type="checkbox" name="Ina_count[]" value="1" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_damper" type="radio" name="fancheck[1]" id="inlineRadio3" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_damper" type="radio" name="fancheck[1]" id="清潔入口風門" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_damper" type="radio" name="fancheck[2]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label In_damper" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_damper" type="radio" name="fancheck[2]" id="更換入口風門" value="損壞">
+                                                                                <label class="form-check-label In_damper" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">入口法蘭</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input In_flange" type="checkbox" name="Ina_count[]" value="2" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_flange" type="radio" name="fancheck[3]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_flange" type="radio" name="fancheck[3]" id="清潔入口法蘭" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_flange" type="radio" name="fancheck[4]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label In_flange" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input In_flange" type="radio" name="fancheck[4]" id="更換入口法蘭" value="損壞">
+                                                                                <label class="form-check-label In_flange" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">喇叭口</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bell_mouth" type="checkbox" name="Ina_count[]" value="3" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bell_mouth" type="radio" name="fancheck[5]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bell_mouth" type="radio" name="fancheck[5]" id="清潔喇叭口" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bell_mouth" type="radio" name="fancheck[6]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bell_mouth" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bell_mouth" type="radio" name="fancheck[6]" id="更換喇叭口" value="損壞">
+                                                                                <label class="form-check-label Bell_mouth" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">風輪</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Wind_wheel" type="checkbox" name="Ina_count[]" value="4" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Wind_wheel" type="radio" name="fancheck[7]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Wind_wheel" type="radio" name="fancheck[7]" id="清潔風輪" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Wind_wheel" type="radio" name="fancheck[8]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Wind_wheel" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Wind_wheel" type="radio" name="fancheck[8]" id="更換風輪" value="損壞">
+                                                                                <label class="form-check-label Wind_wheel" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">蝸牛殼</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Spiral_case" type="checkbox" name="Ina_count[]" value="5" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Spiral_case" type="radio" name="fancheck[9]"  id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Spiral_case" type="radio" name="fancheck[9]"  id="清潔蝸牛殼" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Spiral_case" type="radio" name="fancheck[10]"  id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Spiral_case" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Spiral_case" type="radio" name="fancheck[10]"  id="更換蝸牛殼" value="損壞">
+                                                                                <label class="form-check-label Spiral_case" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承底座</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearseat" type="checkbox" name="Ina_count[]" value="6" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearseat" type="radio" name="fancheck[11]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearseat" type="radio" name="fancheck[11]" id="清潔軸承底座" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearseat" type="radio" name="fancheck[12]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearseat" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearseat" type="radio" name="fancheck[12]" id="更換軸承底座" value="損壞">
+                                                                                <label class="form-check-label Bearseat" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承箱（前）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearingbox_f" type="checkbox" name="Ina_count[]" value="7" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_f" type="radio" name="fancheck[13]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_f" type="radio" name="fancheck[13]" id="清潔軸承箱（前）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_f" type="radio" name="fancheck[14]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearingbox_f" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_f" type="radio" name="fancheck[14]" id="更換軸承箱（前）" value="損壞">
+                                                                                <label class="form-check-label Bearingbox_f" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承箱（後）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearingbox_b" type="checkbox" name="Ina_count[]" value="8" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_b" type="radio" name="fancheck[15]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_b" type="radio" name="fancheck[15]" id="清潔軸承箱（後）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_b" type="radio" name="fancheck[16]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearingbox_b" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearingbox_b" type="radio" name="fancheck[16]" id="更換軸承箱（後）" value="損壞">
+                                                                                <label class="form-check-label Bearingbox_b" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承（前）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearing_f" type="checkbox" name="Ina_count[]" value="9" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_f" type="radio" name="fancheck[17]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_f" type="radio" name="fancheck[17]" id="清潔軸承（前）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_f" type="radio" name="fancheck[18]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearing_f" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_f" type="radio" name="fancheck[18]" id="更換軸承（前）" value="損壞">
+                                                                                <label class="form-check-label Bearing_f" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承（後）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearing_b" type="checkbox" name="Ina_count[]" value="10" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_b" type="radio" name="fancheck[19]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_b" type="radio" name="fancheck[19]" id="清潔軸承（後）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_b" type="radio" name="fancheck[20]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearing_b" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_b" type="radio" name="fancheck[20]" id="更換軸承（後）" value="損壞">
+                                                                                <label class="form-check-label Bearing_b" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸心</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Axis" type="checkbox" name="Ina_count[]" value="11" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axis" type="radio" name="fancheck[21]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axis" type="radio" name="fancheck[21]" id="清潔軸心" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axis" type="radio" name="fancheck[22]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Axis" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axis" type="radio" name="fancheck[22]" id="更換軸心" value="損壞">
+                                                                                <label class="form-check-label Axis" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr> 
+                                                                    <tr> 
+                                                                        <td class="col-4">聯軸器（風車側）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Coupling_blower" type="checkbox" name="Ina_count[]" value="12" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                          </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_blower" type="radio" name="fancheck[23]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_blower" type="radio" name="fancheck[23]" id="清潔聯軸器（風車側）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_blower" type="radio" name="fancheck[24]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Coupling_blower" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_blower" type="radio" name="fancheck[24]" id="更換聯軸器（風車側）" value="損壞">
+                                                                                <label class="form-check-label Coupling_blower" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">聯軸器（馬達側）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Coupling_motor" type="checkbox" name="Ina_count[]" value="13" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                          </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_motor" type="radio" name="fancheck[25]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_motor" type="radio" name="fancheck[25]" id="清潔聯軸器（馬達側）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_motor" type="radio" name="fancheck[26]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Coupling_motor" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_motor" type="radio" name="fancheck[26]" id="更換聯軸器（馬達側）" value="損壞">
+                                                                                <label class="form-check-label Coupling_motor" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">皮帶輪（主）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Pulley_drive" type="checkbox" name="Ina_count[]" value="14" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley_drive" type="radio" name="fancheck[27]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley_drive" type="radio" name="fancheck[27]" id="清潔皮帶輪（主）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley_drive" type="radio" name="fancheck[28]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Pulley_drive" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley_drive" type="radio" name="fancheck[28]" id="更換皮帶輪（主）" value="損壞">
+                                                                                <label class="form-check-label Pulley_drive" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">皮帶輪（被）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Pulley" type="checkbox" name="Ina_count[]" value="15" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley" type="radio" name="fancheck[29]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley" type="radio" name="fancheck[29]" id="清潔皮帶輪（被）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley" type="radio" name="fancheck[30]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Pulley" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Pulley" type="radio" name="fancheck[30]" id="更換皮帶輪（被）" value="損壞">
+                                                                                <label class="form-check-label Pulley" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">皮帶</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Belt" type="checkbox" name="Ina_count[]" value="16" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt" type="radio" name="fancheck[31]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt" type="radio" name="fancheck[31]" id="清潔皮帶" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt" type="radio" name="fancheck[32]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Belt" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt" type="radio" name="fancheck[32]" id="更換皮帶" value="損壞">
+                                                                                <label class="form-check-label Belt" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸承外蓋</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Bearing_cover" type="checkbox" name="Ina_count[]" value="17" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_cover" type="radio" name="fancheck[33]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_cover" type="radio" name="fancheck[33]" id="清潔軸承外蓋" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_cover" type="radio" name="fancheck[34]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Bearing_cover" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Bearing_cover" type="radio" name="fancheck[34]" id="更換軸承外蓋" value="損壞">
+                                                                                <label class="form-check-label Bearing_cover" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">聯軸器外蓋</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Coupling_cover" type="checkbox" name="Ina_count[]" value="18" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_cover" type="radio" name="fancheck[35]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_cover" type="radio" name="fancheck[35]" id="清潔聯軸器外蓋" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_cover" type="radio" name="fancheck[36]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Coupling_cover" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Coupling_cover" type="radio" name="fancheck[36]" id="更換聯軸器外蓋" value="損壞">
+                                                                                <label class="form-check-label Coupling_cover" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">皮帶外蓋</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Belt_cover" type="checkbox" name="Ina_count[]" value="19" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt_cover" type="radio" name="fancheck[37]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt_cover" type="radio" name="fancheck[37]" id="清潔皮帶外蓋" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt_cover" type="radio" name="fancheck[38]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Belt_cover" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Belt_cover" type="radio" name="fancheck[38]" id="更換皮帶外蓋" value="損壞">
+                                                                                <label class="form-check-label Belt_cover" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">避震墊</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Cushion" type="checkbox" name="Ina_count[]" value="20" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Cushion" type="radio" name="fancheck[39]"  id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Cushion" type="radio" name="fancheck[39]"  id="清潔避震墊" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Cushion" type="radio" name="fancheck[40]"  id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Cushion" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Cushion" type="radio" name="fancheck[40]"  id="更換避震墊" value="損壞">
+                                                                                <label class="form-check-label Cushion" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">避震器</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Shock_absorber" type="checkbox" name="Ina_count[]" value="21" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Shock_absorber" type="radio" name="fancheck[41]"  id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Shock_absorber" type="radio" name="fancheck[41]"  id="清潔避震器" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Shock_absorber" type="radio" name="fancheck[42]"  id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Shock_absorber" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Shock_absorber" type="radio" name="fancheck[42]"  id="更換避震器" value="損壞">
+                                                                                <label class="form-check-label Shock_absorber" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">出口風門</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Out_damper" type="checkbox" name="Ina_count[]" value="22" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_damper" type="radio" name="fancheck[43]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_damper" type="radio" name="fancheck[43]" id="清潔出口風門" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_damper" type="radio" name="fancheck[44]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Out_damper" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_damper" type="radio" name="fancheck[44]" id="更換出口風門" value="損壞">
+                                                                                <label class="form-check-label Out_damper" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">出口法蘭</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Out_flange" type="checkbox" name="Ina_count[]" value="23" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_flange" type="radio" name="fancheck[45]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_flange" type="radio" name="fancheck[45]" id="清潔出口法蘭" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_flange" type="radio" name="fancheck[46]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Out_flange" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Out_flange" type="radio" name="fancheck[46]" id="更換出口法蘭" value="損壞">
+                                                                                <label class="form-check-label Out_flange" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">軸封</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Seal" type="checkbox" name="Ina_count[]" value="24" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Seal" type="radio" name="fancheck[47]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Seal" type="radio" name="fancheck[47]" id="清潔軸封" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Seal" type="radio" name="fancheck[48]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Seal" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Seal" type="radio" name="fancheck[48]" id="更換軸封" value="損壞">
+                                                                                <label class="form-check-label Seal" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>      
+                                                                </tbody> 
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 風車檢查表結束 -->
+                                            
+
+                                            <!-- 馬達檢查表開始 -->
+                                            <section class="container">
+                                                <p class="mt-5">馬達檢查表</p>
+                                                <div class="row justify-content-center mt-4 mb-2">
+                                                    <div class="col">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover text-center" id="motorTable"> 
+                                                                <thead> 
+                                                                    <tr> 
+                                                                        <th class="col-4 bg-secondary text-light">馬達檢查細項</th> 
+                                                                        <th class="col-2 bg-secondary text-light">無配件</th> 
+                                                                        <th class="col-3 bg-secondary text-light">是否乾淨</th> 
+                                                                        <th class="col-3 bg-secondary text-light">配件功能</th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達軸心（前）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Axle_f" type="checkbox" name="Ina_count[]" value="25" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_f" type="radio" name="fancheck[49]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_f" type="radio" name="fancheck[49]" id="清潔馬達軸心（前）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_f" type="radio" name="fancheck[50]"  value="正常">
+                                                                                <label class="form-check-label Axle_f" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_f" type="radio" name="fancheck[50]" id="更換馬達軸心（前）" value="損壞">
+                                                                                <label class="form-check-label Axle_f" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達軸心（後）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Axle_b" type="checkbox" name="Ina_count[]" value="26" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_b" type="radio" name="fancheck[51]" id="" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_b" type="radio" name="fancheck[51]" id="清潔馬達軸心（後）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_b" type="radio" name="fancheck[52]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Axle_b" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Axle_b" type="radio" name="fancheck[52]" id="更換馬達軸心（後）" value="損壞">
+                                                                                <label class="form-check-label Axle_b" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達軸承（前）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Motor_bearing_f" type="checkbox" name="Ina_count[]" value="27" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_f" type="radio" name="fancheck[53]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_f" type="radio" name="fancheck[53]" id="清潔馬達軸承（前）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_f" type="radio" name="fancheck[54]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Motor_bearing_f" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_f" type="radio" name="fancheck[54]" id="更換馬達軸承（前）" value="損壞">
+                                                                                <label class="form-check-label Motor_bearing_f" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達軸承（後）</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Motor_bearing_b" type="checkbox" name="Ina_count[]" value="28" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_b" type="radio" name="fancheck[55]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_b" type="radio" name="fancheck[55]" id="清潔馬達軸承（後）" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_b" type="radio" name="fancheck[56]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Motor_bearing_b" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_bearing_b" type="radio" name="fancheck[56]" id="更換馬達軸承（後）" value="損壞">
+                                                                                <label class="form-check-label Motor_bearing_b" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達托架（前）</td> 
+                                                                            <td class="col-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input Support_f" type="checkbox" name="Ina_count[]" value="29" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_f" type="radio" name="fancheck[57]" id="inlineRadio1" value="乾淨">
+                                                                                    <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_f" type="radio" name="fancheck[57]" id="清潔馬達托架（前）" value="髒污">
+                                                                                    <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_f" type="radio" name="fancheck[58]" id="inlineRadio3" value="正常">
+                                                                                    <label class="form-check-label" for="inlineRadio1">正常</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_f" type="radio" name="fancheck[58]" id="更換馬達托架（前）" value="損壞">
+                                                                                    <label class="form-check-label" for="inlineRadio2">損壞</label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達托架（後）</td> 
+                                                                            <td class="col-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input Support_b" type="checkbox" name="Ina_count[]" value="30" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_b" type="radio" name="fancheck[59]" id="inlineRadio1" value="乾淨">
+                                                                                    <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_b" type="radio" name="fancheck[59]" id="清潔馬達托架（後）" value="髒污">
+                                                                                    <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_b" type="radio" name="fancheck[60]" id="inlineRadio3" value="正常">
+                                                                                    <label class="form-check-label" for="inlineRadio1">正常</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Support_b" type="radio" name="fancheck[60]" id="更換馬達托架（後）" value="損壞">
+                                                                                    <label class="form-check-label" for="inlineRadio2">損壞</label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達轉子</td> 
+                                                                            <td class="col-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input Motor_rotor" type="checkbox" name="Ina_count[]" value="31" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_rotor" type="radio" name="fancheck[61]" id="inlineRadio1" value="乾淨">
+                                                                                    <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_rotor" type="radio" name="fancheck[61]" id="清潔馬達轉子" value="髒污">
+                                                                                    <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_rotor" type="radio" name="fancheck[62]" id="inlineRadio3" value="正常">
+                                                                                    <label class="form-check-label" for="inlineRadio1">正常</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_rotor" type="radio" name="fancheck[62]" id="更換馬達轉子" value="損壞">
+                                                                                    <label class="form-check-label" for="inlineRadio2">損壞</label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達線圈</td> 
+                                                                            <td class="col-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input Motor_coil" type="checkbox" name="Ina_count[]" value="32" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_coil" type="radio" name="fancheck[63]" id="inlineRadio1" value="乾淨">
+                                                                                    <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_coil" type="radio" name="fancheck[63]" id="清潔馬達線圈" value="髒污">
+                                                                                    <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_coil" type="radio" name="fancheck[64]" id="inlineRadio3" value="正常">
+                                                                                    <label class="form-check-label" for="inlineRadio1">正常</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_coil" type="radio" name="fancheck[64]" id="更換馬達線圈" value="損壞">
+                                                                                    <label class="form-check-label" for="inlineRadio2">損壞</label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td class="col-4">馬達冷卻器</td> 
+                                                                            <td class="col-2">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input Motor_cooler" type="checkbox" name="Ina_count[]" value="33" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_cooler" type="radio" name="fancheck[65]" id="inlineRadio1" value="乾淨">
+                                                                                    <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_cooler" type="radio" name="fancheck[65]" id="清潔馬達冷卻器" value="髒污">
+                                                                                    <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="col-3">
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_cooler" type="radio" name="fancheck[66]" id="inlineRadio3" value="正常">
+                                                                                    <label class="form-check-label" for="inlineRadio1">正常</label>
+                                                                                </div>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input Motor_cooler" type="radio" name="fancheck[66]" id="更換馬達冷卻器" value="損壞">
+                                                                                    <label class="form-check-label" for="inlineRadio2">損壞</label>
+                                                                                </div>
+                                                                            </td>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                    <td class="col-4">馬達外蓋</td> 
+                                                                        <td class="col-2">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input Motor_cover" type="checkbox" name="Ina_count[]" value="34" id="flexCheckDefault" onclick="check_NA(this)">
+                                                                                <label class="form-check-label" for="flexCheckDefault">N/A</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_cover" type="radio" name="fancheck[67]" id="inlineRadio1" value="乾淨">
+                                                                                <label class="form-check-label" for="inlineRadio1">乾淨</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_cover" type="radio" name="fancheck[67]" id="清潔馬達外蓋" value="髒污">
+                                                                                <label class="form-check-label" for="inlineRadio2">髒污</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-3">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_cover" type="radio" name="fancheck[68]" id="inlineRadio3" value="正常">
+                                                                                <label class="form-check-label Belt_cover" for="inlineRadio1">正常</label>
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input Motor_cover" type="radio" name="fancheck[68]" id="更換馬達外蓋" value="損壞">
+                                                                                <label class="form-check-label Belt_cover" for="inlineRadio2">損壞</label>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>    
+                                                                </tbody> 
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 馬達檢查表結束 -->
+                                            <!-- 螺絲檢查開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-center mt-5">
+                                                    <div class="col-md-12">
+                                                        <label for=""  class="form-label me-md-5">各處螺絲完整性：</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input Screw" type="radio" name="Ierror_bolt"  value="1">
+                                                            <label class="form-check-label" for="">無異常</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">                                                            
+                                                                <div class="input-group-text bg-white border-0">
+                                                                    <input class="form-check-input Screw" type="radio" id="螺絲異常" value="2"  name="Ierror_bolt" onclick="screw_InputFocus();">
+                                                                    <label class="form-check-label" for="">異常：</label>
+                                                                    <input type="text" class="form-control" placeholder="請填寫異常說明" id="Screw_ab_input" name="Ierror_bolt_remark">
+                                                                </div>
+                                                                
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                </div>
+                                            </section>
+                                            <!-- 螺絲檢查結束 -->
+                                            <!-- 備註開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-12 my-4" >
+                                                        <label for="" class="form-label">備註：</label>
+                                                        <textarea class="form-control" placeholder="請輸入備註" name="Iremark" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 備註結束 -->
+
+                                            <!-- 下次建議維修保養項目開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-12 my-4" >
+                                                        <label for="" class="form-label">下次建議維修保養項目：</label>
+                                                            <!-- <input type="submit" class="btn btn-outline-primary"  value="一鍵生成" id="one_generate"> -->
+                                                            <button type="button" id="step2" class="btn btn-outline-primary" onclick="one_generate()">一鍵生成</button>
+                                                        <p id="btnList" class="my-3">
+                                                            <!-- <input class="btn btn-outline-danger mx-2 mb-3" name="Inext_fix[]" value="測試項目" readonly> -->
+                                                        </p>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            
+                                            <!-- 下次建議維修保養項目 -->
+                                        <!-- </form> -->
+                                        <!-- ajax check_List </form> -->
+                                            <!-- 維修單位+維修人員開始 -->
+                                            <section class="container">
+                                                <div class="row g-5 justify-content-md-end justify-content-center mt-5">
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">維修單位</label>
+                                                        <input type="text" class="form-control" id="" name="Ifix_depart" aria-describedby="" value="" placeholder="請輸入維修單位">
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">維修人員</label>
+                                                        <input type="text" class="form-control" name="Ifix_person" id="" aria-describedby="" value="" placeholder="請輸入維修人員">
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 維修單位+維修人員結束 -->
+
+                                    </div>
+                                    <!-- card-body End -->
+                                    <div class="card-footer">
+                                        <section class="container">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <input name="status" class="btn btn-primary btn-lg" value="修改維修紀錄"  type="submit">
+                                                <input type="hidden" name="statePrint01" value="Print01">
+                                                <input type="hidden" name="Iuserid" value="administrator">
+
+                                            </div>
+                                        </section>
+                                    
+                                    </div>
+                                    <!-- card-footer End -->
+                                </form>
+                                <!-- card shadow End -->
+                            </div>
+                        </div>       
+                    </div>
+                    <!--divInsert End-->
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy;</span> 
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">您確定要登出嗎？</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">登出以回到登入頁面，或取消登出繼續留在系統。</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary" href="index.php">確定登出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+		<!-- Page level custom scripts -->
+    <script src="../static/js/custom/mobile_toggled.js"></script>
+	<script src="../static/js/demo/datatables-demo.js"></script>
+	<script type="text/javascript" charset="UTF-8">
+
+function one_generate(){
+            let btnList = document.querySelector("#btnList");
+            var str="";
+            var generate_arr=[];
+            let rList = document.querySelectorAll("[type='radio']");
+            rList.forEach(element => {                
+                if((element.checked === true && (element.value === "髒污" || element.value ==="損壞"))){
+                    generate_arr.push(element.id);
+                    str+=`<input class="btn btn-outline-danger mx-2 mb-3" name="Inext_fix[]" value="${element.id}" readonly>`
+                }else{return;}
+            })
+            console.log(generate_arr);
+            btnList.innerHTML =str;
+        }
+
+        function screw_InputFocus(){
+            document.getElementById("Screw_ab_input").focus();
+        }
+
+        function check_NA(obj){
+            let disableClass = obj.className;
+            let disableList = document.querySelectorAll(`[class='${disableClass}']`);
+            disableList.forEach(element => {                
+                if((obj.checked === true && element.type ==="radio")){
+                    element.checked = false;  
+                    element.disabled = true;
+                }else{element.disabled = false;}
+            })
+            $("#step2").trigger('click');
+        }
+        $(':radio').change(function(e){
+                $("#step2").trigger('click'); 
+        });
+
+		function check_all(obj,cName) { 
+			var checkboxs = document.getElementsByClassName(cName); 
+			for(var i=0;i<checkboxs.length;i++){checkboxs[i].checked = obj.checked;} 
+		}
+        function check_delete() {
+	        if (confirm("確定刪除嗎?") == true) {
+		    document.form_List.submit();
+	        } else {
+		        return false;
+	        }
+        }
+	</script>
+</body>
+</html>

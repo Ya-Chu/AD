@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>維修保養紀錄</title>
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="../static/css/test.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="../static/vendor/datatables/dataTables.bootstrap4.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-info sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="menu.php">
+                <div class="sidebar-brand-icon d-flex d-md-none"><i class="fas fa-fw fa-home"></i></div>
+                <div class="sidebar-brand-text d-xl-flex d-none mx-0">技術服務系統</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#authPages"
+                    aria-expanded="false" aria-controls="authPages">
+                    <i class="fas fa-fw fa-key"></i>
+                    <span>權限管理</span>
+                </a>
+                <div id="authPages" class="collapse " aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">權限群組</a>
+                        <a class="collapse-item" href="#">權限設定</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userPages"
+                    aria-expanded="true" aria-controls="userPages">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>使用者及訂單管理</span>
+                </a>
+                <div id="userPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="user.php">使用者創建</a>
+                        <a class="collapse-item" href="pc_ctrl.php">生產資料建置</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#QCPages"
+                    aria-expanded="false" aria-controls="QCPages">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>品質控管</span>
+                </a>
+                <div id="QCPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="qc_generate.php">產生完整報表</a>
+                        <a class="collapse-item" href="qc_product.php">產品資料表</a>
+                        <a class="collapse-item" href="qc_dbt.php">動平衡資料</a>
+                        <a class="collapse-item" href="QC_testing.php">風機性能測試（曲線）</a>
+                        <a class="collapse-item" href="#">保固書</a>
+                        <a class="collapse-item" href="upload_file_page.php">上傳文件</a>
+                        <a class="collapse-item" href="qc_cover.php">送風機設備資料封面</a>
+                        <a class="collapse-item" href="#">產出報告書</a>
+                        <a class="collapse-item" href="error_report.php">場內異常註記</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link " href="#" data-toggle="collapse" data-target="#FixPages"
+                    aria-expanded="true" aria-controls="FixPages">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>維修保養</span>
+                </a>
+                <div id="FixPages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="Fix_ticket.php">派工單</a>
+                        <a class="collapse-item active" href="#">維修保養紀錄</a>
+                        <a class="collapse-item" href="#">維修保養自主檢查表</a>
+                        <a class="collapse-item" href="#">維修保養報告</a>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">維修人員小明</span>
+                                <img class="img-profile rounded-circle"
+                                    src="../static/img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/templates/login.html" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    登出
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Page Content Start-->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">維修保養紀錄</h1>
+                    <!--divList Start-->
+                    <div class="row" id="divList">
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <form id="form_List" name="form_List" action="Fix_record_Edit.php" method="POST"  onsubmit="check_delete();return false;">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-primary" href="Fix_record.php?FDNewsState=Insert">新增維修保養紀錄</a>
+                                            <input type="hidden" name="stateDelete" value="Delete" />
+                                            <input class="btn btn-danger" type="submit" name="Submit" value="刪除勾選資料"/>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" onclick="check_all(this,'checkboxes')">全選</th>
+                                                        <th>工令號碼</th>
+                                                        <th>風機編號</th>
+                                                        <th>客戶名稱</th>
+                                                        <th>服務日期</th>
+                                                        <th>功能項</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2306001</td>
+                                                        <td>OC-1234</td>
+                                                        <td>XXXX有有限公司</td>
+                                                        <td>2022/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2307001</td>
+                                                        <td>SUS-4569</td>
+                                                        <td>OO有限公司</td>
+                                                        <td>2023/12/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td width="8%">
+                                                            <input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>">
+                                                        </td>
+                                                        <td>I41-2204001</td>
+                                                        <td>TFT-1111</td>
+                                                        <td>平安股份有限公司</td>
+                                                        <td>2019/02/24</td>
+                                                        <td class="text-center">
+                                                    <div ><a class="btn btn-info" href="fix_record.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料修改及列印</a></div>
+                                                    <!-- <div><a class="btn " target= "_blank" href="QC_blower_cover_export.html" style="font-size:16px;"><i class="fa fa-print"></i><span class="d-none d-lg-inline">&nbsp;</span>資料列印</a></div> -->
+                                                    </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--divList End-->
+
+
+
+                    <!--divEdit Start-->
+                    <div class="row justify-content-center" id="divEdit">
+                        <div class="col-md-10">
+                            <div class="card shadow mb-4">
+                                <form id="form_Edit" name="form_Edit" action="" method="POST" enctype="multipart/form-data" class="was-validated">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-success btn-label" href="fix_record.php?FDNewsState=List" style="font-size:18px"><i class="fa fa-arrow-left fa-x"></i>&nbsp;返回列表</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mt-4 mb-5 h1">維修保養紀錄</div>
+                                        <div class="row justify-content-center mb-4"><span class="border border-info w-75 d-none d-lg-inline"></span></div>
+                                           <!-- 表頭開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">客戶名稱</label>
+                                                        <input type="text" class="form-control" id="Ecustomer" name="Ecustomer" aria-describedby="" value="" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Iworknumber" class="form-label">工令號碼</label>
+                                                        <input type="text" class="form-control" name="Eworknumber" id="Eworknumber" aria-describedby="" value="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">客戶地址</label>
+                                                        <input type="text" class="form-control" id="" name="Eaddress" aria-describedby="" value="" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Ifan_type" class="form-label">風機型號</label>
+                                                        <input type="text" class="form-control" name="Efan_type" id="Efan_type" aria-describedby="" value="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">聯絡人</label>
+                                                        <input type="text" class="form-control" id="" name="Ep_info" aria-describedby="" value="" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="Ifannumber" class="form-label">風機編號</label>
+                                                        <input type="text" class="form-control" id="Efannumber" name="Efannumber" aria-describedby="" value="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-12 my-4" >
+                                                        <label for="G_id" class="form-label">服務日期</label>
+                                                        <div class="row">
+                                                            <div class="col-auto"><input class="form-control" type="date" id="E_FixtimeStart" name="Eservice_data_f" onchange="E_timeInterval()" required></div>
+                                                            <div class="d-none d-lg-inline col-auto h3">~</div>
+                                                            <div class="d-flex d-lg-none h6 mx-auto my-2">至</div>
+                                                            <div class="col-auto"><input class="form-control" type="date" id="E_FixtimeEnd" name="Eservice_data_t" onchange="E_timeInterval()" required></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 表頭結束 -->
+
+                                            <!-- 更換零件表開始 -->
+                                            <section class="container mt-5">
+                                                <p class="mt-2 mb-0">更換零件<br>(若本次無更換零件，請輸入NA/NA/0)</p>
+                                                        <!-- <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover text-cencer" id="componentTable"> 
+                                                                <thead> 
+                                                                    <tr> 
+                                                                        <th class="col-4 bg-secondary text-light">零件名稱</th> 
+                                                                        <th class="col-4  bg-secondary text-light">零件型號</th> 
+                                                                        <th class="col-3 bg-secondary text-light">零件數量</th> 
+                                                                        <th class="col-1"><input type="button" onclick="addline_i()" value="新增項目" class="btn btn-primary" style="font-size:16px;"></th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody>
+                                                                <?php  // if(isset($news[15])) for($i=0;$i<count($component_name);$i++){ ?>
+                                                                    <tr> 
+                                                                        <td class="col-4"><input type="text" name="Ecomponent_name[]" value="<?php //echo isset($component_name[$i])?$component_name[$i]:'NoData';?>" class="form-control"></td> 
+                                                                        <td class="col-4"><input type="text" name="Ecomponent_type[]" value="<?php //echo isset($component_type[$i])?$component_type[$i]:'NoData';?>"class="form-control"></td>
+                                                                        <td class="col-3"><input type="number" name="Ecomponent_num[]" value="<?php //echo isset($component_num[$i])?$component_num[$i]:'NoData';?>"class="form-control"class="form-control"></td>
+                                                                        <td class="col-1"><input type="button" class="btn btn-danger" value="删除此列" onclick="del_i()"></td>
+                                                                    </tr> 
+                                                                    <?php  //} ?>
+                                                                </tbody> 
+                                                            </table>
+                                                        </div> -->
+                                                <div class="row row-cols-1 row-cols-md-3" id="component_List">
+                                                    <div class="col">
+                                                        <div class="card shadow-lg mt-5">
+                                                            <div class="card-header bg-secondary text-light">
+                                                                <div class="container-fluid">
+                                                                    <div class="row align-items-center">
+                                                                        <div class="col-4"><span class="">更換零件</span></div>
+                                                                        <div class="col-8">
+                                                                            <div class="row justify-content-end">
+                                                                                <button type="button" class="btn btn-primary" onclick="add_c();">新增</button>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="col-md-12 my-2">
+                                                                        <label for="" class="form-label">零件名稱：</label>
+                                                                        <input type="text" class="form-control " id="" name="Icomponent_name[]" aria-describedby="" value="" required>
+                                                                </div>
+                                                                <div class="col-md-12 my-2">
+                                                                        <label for="" class="form-label">零件型號：</label>
+                                                                        <input type="text" class="form-control" id="" name="Icomponent_type[]" aria-describedby="" value="" required>
+                                                                </div>                                                    
+                                                                <div class="col-md-12 my-2">
+                                                                        <label for="" class="form-label">零件數量：</label>
+                                                                        <input type="number" class="form-control" id="" name="Icomponent_num[]" aria-describedby="" value="" required>
+                                                                </div>
+                                                            </div>      
+                                                        </div>
+                                                    </div>              
+                                                </div>
+                                            </section>
+                                            <!-- 更換零件表結束 -->
+
+
+                                            <!-- 維修工法元件化開始 -->
+                                            <section class="container">
+                                                <p class="mt-5">維修工法
+                                                    <button type="button" class="btn btn-danger mx-3 my-1" onclick="E_add_fix_method();">新增項目</button>
+                                                </p>
+                                                <div class="row mt-4 mb-2" id="E_fix_method_box">
+                                                        <div class="col-md-3">
+                                                        <button type="button" class="btn btn-outline-primary mx-1 my-1 rounded-pill">
+                                                            <div class="input-group">
+                                                                <input list="E_fix_method" class="form-control fix_method" aria-label="Editfix_method" name="Ework_method[]" id="Ework_method[0]"  value="" 
+                                                                onchange="add_value(this);" required >
+                                                                <datalist id="E_fix_method">
+                                                                    <option value=""></option>
+                                                                    <option value="軸承組更換">
+                                                                    <option value="軸對軸雷射對心">
+                                                                    <option value="皮帶對心">
+                                                                    <option value="葉輪更換">
+                                                                    <option value="葉輪清潔">
+                                                                    <option value="頻譜分析">
+                                                                    <option value="線上動平衡校正">
+                                                                    <option value="軸心更換">
+                                                                    <option value="皮帶輪組更換">
+                                                                    <option value="皮帶更換">
+                                                                </datalist>
+                                                                <span class="input-group-text border-0 bg-white invisible"><strong>X</strong></span> 
+                                                            </div>
+                                                        </button>
+                                                        </div>                                                 
+                                                </div>
+                                            </section>
+                                            <!-- 維修工法元件化結束 -->
+
+                                            <!-- 驗收方式開始 -->
+                                            <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-12 my-4" >
+                                                        <label for="" class="form-label">驗收方式</label>
+                                                        <textarea class="form-control" id="" name="Echeck_meth" style="height: 100px" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 驗收方式結束 -->
+
+                                            <!-- 上傳圖片與圖片說明開始 -->
+                                            <section class="container">
+                                                <p class="mt-5">上傳圖片與圖片說明</p>
+                                                <!-- desktop btn-group -->
+                                                <div class="row mt-4 mb-4">
+                                                    <div class="col-md-12">
+
+                                                        <button class="btn btn-primary btn-lg" type="button" id="figUpload" onclick="E_fig_add();">新增圖片說明</button>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="row row-cols-md-2 row-cols-1 g-1" id="E_card_List">
+
+                                                    <!-- 卡片元件 -->
+                                                        <div class="col mb-2 mb-md-3">
+                                                            <div class="card shadow w-100 h-100">
+                                                                <div class="card-header bg-warning text-gray-800">
+                                                                    <div class="row justify-content-between">
+                                                                        <div class="col-md-10 col-6"><div class="h4 d-inline-block mt-1">圖片說明</div></div>
+                                                                        <div class="col-md-2 col-6">
+                                                                            <button class="btn btn-outline-danger invisible">刪除</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                    
+                                                                    <input type="file" name="EfileUpload[]" class="form-control" id="EchooseFile1" onchange="E_choose_upload(this,this.id);" multiple="multiple">
+                                                                    <img src="..." class="card-img-middle img-fluid" id="EimgPlaceholder1" alt="" name="EimgPlaceholder[]">
+                                                                    <div class="card-body">
+                                                                        <p class="card-text">
+                                                                            <label for="" class="form-label"><strong>說明：</strong></label>                                                                            
+                                                                                <input list="E_figRemark" class="form-control" id="ERemarkchoice" name="Eremarkimg[]" placeholder="請搜尋說明例句" id="btnDropdown" onchange="fig_content_add_value(this);">
+                                                                                <datalist id="E_figRemark" class="dropdown-menu">
+                                                                                    <option class="dropdown-item" value="無">
+                                                                                    <option class="dropdown-item" value="例句例句例句例句例句一一一589494">
+                                                                                    <option class="dropdown-item" value="例句例句例句例句例句二二二18764198186">
+                                                                                    <option class="dropdown-item" value="例句例句例句例句例句三三三161">
+                                                                                    <option class="dropdown-item" value="例句例句例句例句例句四四四4585658">
+                                                                                    <option class="dropdown-item" value="例句例句例句例句例句五五五999">
+                                                                                </datalist>
+                                                                        </p>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+
+  
+
+                                                    
+                                                </div>
+                                            </section>
+                                            <!-- 上傳圖片與圖片說明結束 -->
+
+                                            <!-- 維修單位+維修人員開始 -->
+                                            <section class="container">
+                                                <div class="row g-5 justify-content-md-end justify-content-center mt-5">
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">維修單位</label>
+                                                        <input type="text" class="form-control" id="" name="Efix_depart" aria-describedby="" value="" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">維修人員</label>
+                                                        <input type="text" class="form-control" name="Efix_person" id="" aria-describedby="" value="" required>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 維修單位+維修人員結束 -->
+
+                                    </div>
+                                    <!-- card-body End -->
+                                    <div class="card-footer">
+                                        <section class="container">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <input name="status" class="btn btn-primary btn-lg" value="修改維修紀錄" type="submit">
+                                                <input type="hidden" name="statePrint01" value="Print01">
+                                                <input type="hidden" name="Euserid" value="<?php echo $_SESSION['User_Id']?>">
+                                                <input type="hidden" name="Efannumber" value="2023">
+                                            </div>
+                                        </section>
+                                        <?php if(!empty($resMessage)) {?>
+                                            <div class="alert <?php echo $resMessage['status']?>">
+                                            <?php echo $resMessage['message']?>
+                                            </div>
+                                            <?php }?> 
+                                    </div>
+                                    <!-- card-footer End -->
+                                </form>
+                            </div>
+                            <!-- card shadow End -->
+                        </div>       
+                    </div>
+                    <!--divEdit End-->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy;</span> 
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">您確定要登出嗎？</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">登出以回到登入頁面，或取消登出繼續留在系統。</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary" href="index.php">確定登出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+		<!-- Page level custom scripts -->
+	<script src="../static/js/demo/datatables-demo.js"></script>
+	<script type="text/javascript" charset="UTF-8">
+
+        function myFunction(x) {
+            if (width.matches) { // If media query matches
+            let ul = document.querySelector("#accordionSidebar");
+            ul.classList.toggle("toggled");
+            let html = document.documentElement; 
+            html.style.scrollBehavior="auto"
+            }
+        }
+        var width = window.matchMedia("(max-width: 576px)")
+        myFunction(width) // Call listener function at run time
+        width.addListener(myFunction) // Attach listener function on state changes
+
+// Insert Edit圖片說明卡片動態生成
+
+        function fig_content_add_value(obj){
+            obj.setAttribute("value",`${obj.value}`);
+        }
+
+        function choose_upload(obj,id){
+            //create id
+            let digit = id.replace('chooseFile', '').length
+            id=id.slice(-`${digit}`);
+            
+            // readURL(); readpic 
+            if (obj.files && obj.files[0]) {
+                var reader = new FileReader(); 
+                reader.onload = function (e) {
+                // console.log(reader);
+                console.log(e.target.result);
+                // $(`#chooseFile${id}`).attr('value',e.target.result);
+                $(`#imgPlaceholder${id}`).attr('src',e.target.result);
+                
+                }
+                // base64 string conversion
+                reader.readAsDataURL(obj.files[0]);
+                console.log(obj.files[0].name); 
+                $(`#chooseFile${id}`).attr('value',obj.files[0].name); 
+            }
+    }
+
+    function E_choose_upload(obj,id){
+            //create id
+            let digit = id.replace('EchooseFile', '').length
+            id=id.slice(-`${digit}`);
+            
+            // readURL(); readpic 
+            if (obj.files && obj.files[0]) {
+                var reader = new FileReader(); 
+                reader.onload = function (e) {
+                // console.log(reader);
+                console.log(e.target.result);
+                // $(`#chooseFile${id}`).attr('value',e.target.result);
+                $(`#EimgPlaceholder${id}`).attr('src',e.target.result);
+                
+                }
+                // base64 string conversion
+                reader.readAsDataURL(obj.files[0]);
+                console.log(obj.files[0].name); 
+                $(`#EchooseFile${id}`).attr('value',obj.files[0].name); 
+            }
+    }
+        
+        var fig_id=1;
+        function fig_add() {
+            fig_id++;
+
+            let conponent_str =
+            `<div class="col mb-2 mb-md-3"><div class="card shadow w-100 h-100"><div class="card-header bg-warning text-gray-800"><div class="row justify-content-between"><div class="col-md-10 col-6"><div class="h4 d-inline-block mt-1">圖片說明</div></div><div class="col-md-2 col-6"><button type="button" class="btn btn-outline-danger" onclick="delete_card(this);">刪除</button></div></div></div><input type="file" name="fileUpload[]" class="form-control" id="chooseFile${fig_id}" onchange="choose_upload(this,this.id)" multiple="multiple"> <img src="..." class="card-img-middle img-fluid" id="imgPlaceholder${fig_id}" alt="" name="imgPlaceholder[]"><div class="card-body"><p class="card-text"><label for="" class="form-label"><strong>說明：</strong></label><input list="figRemark" class="form-control" id="Remarkchoice" name="Iremarkimg[]" placeholder="請搜尋說明例句" id="btnDropdown" onchange="fig_content_add_value(this)"><datalist id="figRemark" class="dropdown-menu"><option class="dropdown-item" value="無"><option class="dropdown-item" value="例句例句例句例句例句一一一589494"><option class="dropdown-item" value="例句例句例句例句例句二二二18764198186"><option class="dropdown-item" value="例句例句例句例句例句三三三161"><option class="dropdown-item" value="例句例句例句例句例句四四四4585658"><option class="dropdown-item" value="例句例句例句例句例句五五五999"></datalist></p></div></div></div>
+            `;
+            $('#card_List').append(conponent_str);
+        }
+
+        var E_fig_id=1000;
+        function E_fig_add() {
+            E_fig_id++;
+            let conponent_str =`<div class="col mb-2 mb-md-3"><div class="card shadow w-100 h-100"><div class="card-header bg-warning text-gray-800"><div class="row justify-content-between"><div class="col-md-10 col-6"><div class="h4 d-inline-block mt-1">圖片說明</div></div><div class="col-md-2 col-6"><button type="button" class="btn btn-outline-danger" onclick="delete_card(this);">刪除</button></div></div></div><input type="file" name="EfileUpload[]" class="form-control" id="EchooseFile${E_fig_id}" onchange="E_choose_upload(this,this.id)" multiple="multiple"> <img src="..." class="card-img-middle img-fluid" id="EimgPlaceholder${E_fig_id}" alt="" name="EimgPlaceholder[]"><div class="card-body"><p class="card-text"><label for="" class="form-label"><strong>說明：</strong></label><input list="E_figRemark" class="form-control" id="ERemarkchoice" name="Eremarkimg[]" placeholder="請搜尋說明例句" id="btnDropdown" onchange="fig_content_add_value(this)"><datalist id="E_figRemark" class="dropdown-menu"><option class="dropdown-item" value="無"><option class="dropdown-item" value="例句例句例句例句例句一一一589494"><option class="dropdown-item" value="例句例句例句例句例句二二二18764198186"><option class="dropdown-item" value="例句例句例句例句例句三三三161"><option class="dropdown-item" value="例句例句例句例句例句四四四4585658"><option class="dropdown-item" value="例句例句例句例句例句五五五999"></datalist></p></div></div></div>`;
+            $('#E_card_List').append(conponent_str);
+        }
+        function delete_card(obj){
+            obj.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+        }
+// 圖片說明動態生成結束
+
+
+
+// Insert Edit 維修工法動態生成
+        var counter=0;
+        var E_counter=0;   
+        function add_value(obj){
+            obj.setAttribute("value",`${obj.value}`);
+        }
+        function add_fix_method(){
+            counter++;
+            let conponent_str = `<div class="col-md-3"><button type="button" class="btn btn-outline-primary mx-1 my-1 rounded-pill"><div class="input-group"><input list="fix_method" class="form-control fix_method" aria-label="Inputfix_method" name="Iwork_method[]" id="Iwork_method[${counter}]" value="" onchange="add_value(this);" placeholder="請搜尋維修工法" required><datalist id="fix_method"><option value=""></option><option value="軸承組更換"><option value="軸對軸雷射對心"><option value="皮帶對心"><option value="葉輪更換"><option value="葉輪清潔"><option value="頻譜分析"><option value="線上動平衡校正"><option value="軸心更換"><option value="皮帶輪組更換"><option value="皮帶更換"></datalist><span class="input-group-text border-0 bg-white" onclick="return close_fix_method(this),!1"><strong>X</strong></span></div></button></div>`
+            $('#fix_method_box').append(conponent_str);
+        }
+        function E_add_fix_method(){
+            E_counter++;
+            let conponent_str = `
+            <div class="col-md-3"><button type="button" class="btn btn-outline-primary mx-1 my-1 rounded-pill"><div class="input-group"><input list="E_fix_method" class="form-control fix_method" aria-label="Editfix_method" name="Ework_method[]" id="Ework_method[0]" value="" onchange="add_value(this)" required><datalist id="E_fix_method"><option value=""></option><option value="軸承組更換"><option value="軸對軸雷射對心"><option value="皮帶對心"><option value="葉輪更換"><option value="葉輪清潔"><option value="頻譜分析"><option value="線上動平衡校正"><option value="軸心更換"><option value="皮帶輪組更換"><option value="皮帶更換"></datalist><span class="input-group-text border-0 bg-white" onclick="return close_fix_method(this),!1"><strong>X</strong></span></div></button></div>
+            `
+            $('#E_fix_method_box').append(conponent_str);
+        }
+        function close_fix_method(obj){
+            obj.parentElement.parentElement.parentElement.remove();
+        }
+        
+        function E_timeInterval() { 
+			let start = document.getElementById("E_FixtimeStart"); 
+            let end = document.getElementById("E_FixtimeEnd");
+            let start_ts = (Date.parse(start.value)).valueOf();
+            let end_ts = (Date.parse(end.value)).valueOf();
+            if(start_ts > end_ts){
+                window.alert("開始時間大於結束時間，請重新選擇時間區間");
+                start.value = end.value;
+            }            
+		}
+        function timeInterval() { 
+			let start = document.getElementById("FixtimeStart"); 
+            let end = document.getElementById("FixtimeEnd");
+            let start_ts = (Date.parse(start.value)).valueOf();
+            let end_ts = (Date.parse(end.value)).valueOf();
+            if(start_ts > end_ts){
+                window.alert("開始時間大於結束時間，請重新選擇時間區間");
+                start.value = end.value;
+            }            
+		}
+
+
+
+// 維修零件表js開始(生成、刪除表格列) 
+function delete_c(obj){
+        obj.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+        }
+function add_c(){
+    let conponent_str =
+    `<div class="col"><div class="card shadow-lg mt-5"><div class="card-header bg-secondary text-light"><div class="container-fluid"><div class="row align-items-center"><div class="col-4"><span class="">更換零件</span></div><div class="col-8"><div class="row justify-content-end"><button type="button" class="btn btn-danger mx-md-2 mb-1 mb-md-0" onclick="delete_c(this)">刪除</button><button type="button" class="btn btn-primary" onclick="add_c()">新增</button></div></div></div></div></div><div class="card-body"><div class="col-md-12 my-2"><label for="" class="form-label">零件名稱：</label><input type="text" class="form-control" id="" name="Icomponent_name[]" aria-describedby="" value="" required></div><div class="col-md-12 my-2"><label for="" class="form-label">零件型號：</label><input type="text" class="form-control" id="" name="Icomponent_type[]" aria-describedby="" value="" required></div><div class="col-md-12 my-2"><label for="" class="form-label">零件數量：</label><input type="number" class="form-control" id="" name="Icomponent_num[]" aria-describedby="" value="" required></div></div></div></div>
+    `;
+    $('#component_List').append(conponent_str);
+}
+// 維修零件表js結束
+
+        
+		function check_all(obj,cName) { 
+			var checkboxs = document.getElementsByClassName(cName); 
+			for(var i=0;i<checkboxs.length;i++){checkboxs[i].checked = obj.checked;} 
+		}
+        function check_delete() {
+	        if (confirm("確定刪除嗎?") == true) {
+		    document.form_List.submit();
+	        } else { return false;}
+        }
+        
+
+
+	</script>
+</body>
+</html>

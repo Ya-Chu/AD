@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>客戶滿意度調查表</title>
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="../static/css/test.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="../static/vendor/datatables/dataTables.bootstrap4.min.css">
+
+    <style>
+        #divInsert input[type="radio"] {
+            display: none;
+        }
+        #divInsert .fa-star{
+            color: orange;
+        }
+    </style>
+    
+</head>
+
+<body id="page-top" onload="date_default()">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-info sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="menu.php">
+                <div class="sidebar-brand-icon d-flex d-md-none"><i class="fas fa-fw fa-home"></i></div>
+                <div class="sidebar-brand-text d-xl-flex d-none mx-0">技術服務系統</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#authPages"
+                    aria-expanded="false" aria-controls="authPages">
+                    <i class="fas fa-fw fa-key"></i>
+                    <span>權限管理</span>
+                </a>
+                <div id="authPages" class="collapse " aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">權限群組</a>
+                        <a class="collapse-item" href="#">權限設定</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userPages"
+                    aria-expanded="true" aria-controls="userPages">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>使用者及訂單管理</span>
+                </a>
+                <div id="userPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="user.php">使用者創建</a>
+                        <a class="collapse-item" href="pc_ctrl.php">生產資料建置</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#QCPages"
+                    aria-expanded="false" aria-controls="QCPages">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>品質控管</span>
+                </a>
+                <div id="QCPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="qc_generate.php">產生完整報表</a>
+                        <a class="collapse-item" href="qc_product.php">產品資料表</a>
+                        <a class="collapse-item" href="qc_dbt.php">動平衡資料</a>
+                        <a class="collapse-item" href="QC_testing.php">風機性能測試（曲線）</a>
+                        <a class="collapse-item" href="QC_Warranty.php">保固書</a>
+                        <a class="collapse-item" href="upload_file_page.php">上傳文件</a>
+                        <a class="collapse-item" href="qc_cover.php">送風機設備資料封面</a>
+                        <!-- <a class="collapse-item" href="#">產出報告書</a> -->
+                        <a class="collapse-item" href="error_report.php">場內異常註記</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#FixPages"
+                    aria-expanded="true" aria-controls="FixPages">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>維修保養</span>
+                </a>
+                <div id="FixPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="fix_ticket.php">派工單</a>
+                        <a class="collapse-item" href="fix_all.php">產生維修報告</a>
+                        <a class="collapse-item" href="fix_record.php">維修紀錄表</a>
+                        <?php if (!in_array("fix_checklist", $namePN)){ ?><a class="collapse-item" href="fix_checklist.php">維修檢查表</a><?php } ?>
+                        <a class="collapse-item" href="fix_report.php">維修報告</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#CustomerPages"
+                    aria-expanded="true" aria-controls="CustomerPages">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>客戶滿意度</span>
+                </a>
+                <div id="CustomerPages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item active" href="#">年度滿意度調查</a>
+                        <a class="collapse-item" href="customer_fix.php">維修滿意度調查</a>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">維修人員小明</span>
+                                <img class="img-profile rounded-circle"
+                                    src="../static/img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/templates/login.html" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    登出
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Page Content Start-->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">客戶滿意度調查表</h1>
+                    <!--divList Start-->
+                    <div class="row" id="divList">
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <form id="form_List" name="form_List" action=".php" method="POST" onsubmit="check_delete();return false;">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-primary d-none" href=".php?FDNewsState=Insert">新增客戶滿意度調查表</a>
+                                            <input type="hidden" name="stateDelete" value="Delete" />
+                                            <input class="btn btn-danger" type="submit" name="Submit" value="刪除勾選資料"/>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" onclick="check_all(this,'checkboxes')">全選</th>
+                                                        <th>工令號碼</th>
+                                                        <th>風機編號</th>
+                                                        <th>客戶名稱</th>
+                                                        <th>服務日期</th>
+                                                        <th>功能項</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- <tfoot>
+                                                    <tr>
+                                                        <th><input type="checkbox" onclick="check_all(this,'checkboxes')">全選</th>
+                                                        <th>工令號碼</th>
+                                                        <th>風機編號</th>
+                                                        <th>客戶名稱</th>
+                                                        <th>交貨日期</th>
+                                                        <th>功能項</th>
+                                                    </tr>
+                                                </tfoot> -->
+                                                <tbody>
+                                                    <tr>
+                                                        <td><Input type="Checkbox" name="FDNewsID[]" class="checkboxes" value="<?php echo $datainfo['id']; ?>"></td>
+                                                        <td>1234-5678</td>
+                                                        <td>TF03-10</td>
+                                                        <td>XXXXX股份有限公司</td>
+                                                        <td>2011/04/25</td>
+                                                        <td class="align-middle">
+                                                            <div class="text-center mb-2"><a class="btn btn-secondary" href="Fix_ticket.php?FDNewsState=Edit&FDNewsIDE=<?php echo $datainfo['id']; ?>" style="font-size:16px;"><i class="fa fa-wrench"></i>&nbsp;資料修改</a></div>
+                                                            <div class="text-center"><a class="btn btn-info" target= "_blank" href="Fix_ticket_export.html" style="font-size:16px;"><i class="fa fa-print"></i>&nbsp;資料列印</a></div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--divList End-->
+
+                    <!--divInsert Start-->
+                    <div class="row justify-content-center" id="divInsert">
+                        <div class="col-md-10">
+                            <div class="card shadow mb-4">
+                                <form id="form_Insert" name="form_Insert" action=".php" method="POST">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-success btn-label" href=".php?FDNewsState=List" style="font-size:18px"><i class="fa fa-arrow-left fa-x"></i>&nbsp;返回列表</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mt-4 mb-5 h1">客戶滿意度調查表</div>
+                                        <div class="row justify-content-center mb-4"><span class="border border-info w-75 d-none d-lg-inline"></span></div>
+                                           <!-- 表頭開始 -->
+                                           <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4 d-none">
+                                                        <label for="" class="form-label">業務名稱</label>
+                                                        <input type="text" class="form-control" id="" name="" aria-describedby="" value="" placeholder="請輸入業務名稱" required>
+                                                    </div>
+                                                    <div class="col-md-8 my-4">
+                                                        <label for="" class="form-label">客戶名稱</label>
+                                                        <input type="text" class="form-control" id="" name="" aria-describedby="" value="" placeholder="請輸入客戶名稱" required>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">考評日期</label>
+                                                        <input id="Iwrite_data" class="form-control" type="date" name="" required>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        <!-- 表頭結束 -->
+
+                                            <!-- 客戶滿意度調查開始 -->
+                                            <section class="container">
+                                                <p class="mt-5 mb-3 h4">您對服務體驗的滿意度如何？</p>
+                                                <!-- Q1 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">1.是否對產品品質滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio11"><input class="form-check-input" type="radio" name="star_Q1[1]" id="inlineRadio11" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q1_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio12"><input class="form-check-input" type="radio" name="star_Q1[1]" id="inlineRadio12" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q1_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio13"><input class="form-check-input" type="radio" name="star_Q1[1]" id="inlineRadio13" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q1_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio14"><input class="form-check-input" type="radio" name="star_Q1[1]" id="inlineRadio14" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q1_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio15"><input class="form-check-input" type="radio" name="star_Q1[1]" id="inlineRadio15" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q1_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q1 end -->
+
+                                                <!-- Q2 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">2.是否對交期滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio21"><input class="form-check-input" type="radio" name="star_Q2[2]" id="inlineRadio21" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q2_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio22"><input class="form-check-input" type="radio" name="star_Q2[2]" id="inlineRadio22" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q2_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio23"><input class="form-check-input" type="radio" name="star_Q2[2]" id="inlineRadio23" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q2_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio24"><input class="form-check-input" type="radio" name="star_Q2[2]" id="inlineRadio24" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q2_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio25"><input class="form-check-input" type="radio" name="star_Q2[2]" id="inlineRadio25" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q2_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q2 end -->
+
+                                                <!-- Q3 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">3.是否對客訴處理滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio31"><input class="form-check-input" type="radio" name="star_Q3[3]" id="inlineRadio31" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q3_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio32"><input class="form-check-input" type="radio" name="star_Q3[3]" id="inlineRadio32" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q3_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio33"><input class="form-check-input" type="radio" name="star_Q3[3]" id="inlineRadio33" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q3_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio34"><input class="form-check-input" type="radio" name="star_Q3[3]" id="inlineRadio34" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q3_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio35"><input class="form-check-input" type="radio" name="star_Q3[3]" id="inlineRadio35" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q3_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q3 end -->
+
+                                                <!-- Q4 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">4.是否對業務人員服務態度滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio41"><input class="form-check-input" type="radio" name="star_Q4[3]" id="inlineRadio41" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q4_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio42"><input class="form-check-input" type="radio" name="star_Q4[3]" id="inlineRadio42" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q4_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio43"><input class="form-check-input" type="radio" name="star_Q4[3]" id="inlineRadio43" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q4_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio44"><input class="form-check-input" type="radio" name="star_Q4[3]" id="inlineRadio44" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q4_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio45"><input class="form-check-input" type="radio" name="star_Q4[3]" id="inlineRadio45" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q4_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q4 end -->
+
+                                                <!-- Q5 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">5.對產品包裝、標示是否滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio51"><input class="form-check-input" type="radio" name="star_Q5[3]" id="inlineRadio51" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q5_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio52"><input class="form-check-input" type="radio" name="star_Q5[3]" id="inlineRadio52" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q5_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio53"><input class="form-check-input" type="radio" name="star_Q5[3]" id="inlineRadio53" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q5_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio54"><input class="form-check-input" type="radio" name="star_Q5[3]" id="inlineRadio54" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q5_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio55"><input class="form-check-input" type="radio" name="star_Q5[3]" id="inlineRadio55" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q5_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q5 end -->
+
+                                                <!-- Q6 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">6.是否對本公司專業技術滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio61"><input class="form-check-input" type="radio" name="star_Q6[3]" id="inlineRadio61" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q6_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio62"><input class="form-check-input" type="radio" name="star_Q6[3]" id="inlineRadio62" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q6_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio63"><input class="form-check-input" type="radio" name="star_Q6[3]" id="inlineRadio63" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q6_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio64"><input class="form-check-input" type="radio" name="star_Q6[3]" id="inlineRadio64" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q6_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio65"><input class="form-check-input" type="radio" name="star_Q6[3]" id="inlineRadio65" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q6_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q6 end -->
+
+                                                <!-- Q7 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">7.是否對本公司產品資料及報告滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio71"><input class="form-check-input" type="radio" name="star_Q7[3]" id="inlineRadio71" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q7_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio72"><input class="form-check-input" type="radio" name="star_Q7[3]" id="inlineRadio72" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q7_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio73"><input class="form-check-input" type="radio" name="star_Q7[3]" id="inlineRadio73" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q7_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio74"><input class="form-check-input" type="radio" name="star_Q7[3]" id="inlineRadio74" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q7_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio75"><input class="form-check-input" type="radio" name="star_Q7[3]" id="inlineRadio75" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q7_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q7 end -->
+
+                                                <!-- Q8 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+
+                                                    
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">8.是否對本公司售後服務滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 mt-1">
+                                                        <div class="form-check form-check-inline">   
+                                                            <label class="form-check-label" for="inlineRadio81"><input class="form-check-input" type="radio" name="star_Q8[3]" id="inlineRadio81" value="1" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q8_1"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio82"><input class="form-check-input" type="radio" name="star_Q8[3]" id="inlineRadio82" value="2" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q8_2"></span></label>
+                                                            <label class="form-check-label" for="inlineRadio83"><input class="form-check-input" type="radio" name="star_Q8[3]" id="inlineRadio83" value="3" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q8_3"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio84"><input class="form-check-input" type="radio" name="star_Q8[3]" id="inlineRadio84" value="4" onchange="star(this,this.name,this.value);"><span class="fa fa-star mx-1" id="star_Q8_4"></span></label>                                                            
+                                                            <label class="form-check-label" for="inlineRadio85"><input class="form-check-input" type="radio" name="star_Q8[3]" id="inlineRadio85" value="5" onchange="star(this,this.name,this.value);" checked><span class="fa fa-star mx-1" id="star_Q8_5"></span></label>    
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" placeholder="請輸入您的改善建議" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4 d-none">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q8 end -->
+
+                                            </section>
+                                            <!-- 客戶滿意度調查結束 -->
+
+
+
+
+                                    </div>
+                                    <!-- card-body End -->
+                                    <div class="card-footer">
+                                        <section class="container">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <input name="status" class="btn btn-primary btn-lg" value="新增客戶滿意度調查" type="submit">
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <!-- card-footer End -->
+                                </form><!-- card shadow End -->
+                            </div>
+                        </div>       
+                    </div>
+                    <!--divInsert End-->
+
+                    <!--divEdit Start-->
+                    <div class="row justify-content-center" id="divEdit">
+                        <div class="col-md-10">
+                            <div class="card shadow mb-4">
+                                <form id="form_Insert" name="form_Insert" action=".php" method="POST">
+                                    <div class="card-header py-3">
+                                        <a class="btn btn-success btn-label" href=".php?FDNewsState=List" style="font-size:18px"><i class="fa fa-arrow-left fa-x"></i>&nbsp;返回列表</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center mt-4 mb-5 h1">客戶滿意度調查表</div>
+                                        <div class="row justify-content-center mb-4"><span class="border border-info w-75 d-none d-lg-inline"></span></div>
+                                           <!-- 表頭開始 -->
+                                           <section class="container">
+                                                <div class="row justify-content-md-between">
+                                                    <div class="col-md-6 my-4">
+                                                        <label for="" class="form-label">業務名稱</label>
+                                                        <input type="text" class="form-control" id="" name="" aria-describedby="" value="" placeholder="請輸入業務名稱" required>
+                                                    </div>
+                                                    <div class="col-md-8 my-4 redonly">
+                                                        <label for="" class="form-label">客戶名稱</label>
+                                                        <input type="text" class="form-control" id="" name="" aria-describedby="" value="" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 my-4">
+                                                        <label for="" class="form-label">考評日期</label>
+                                                        <input id="Iwrite_data" class="form-control" type="date" name="" readonly>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 表頭結束 -->
+
+                                            <!-- 客戶滿意度調查 星星卡片開始 -->
+                                            <section class="container">
+                                                <p class="mt-5 mb-3 h4">對服務體驗的滿意度如何？</p>
+                                                <!-- Q1 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">1.是否對產品品質滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q1 end -->
+
+                                                <!-- Q2 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">2.是否對交期滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q2 end -->
+
+                                                <!-- Q3 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">3.是否對客訴處理滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q3 end -->
+
+                                                <!-- Q4 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">4.是否對業務人員服務態度滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q4 end -->
+
+                                                <!-- Q5 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">5.對產品包裝、標示是否滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q5 end -->
+
+                                                <!-- Q6 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">6.是否對本公司專業技術滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q6 end -->
+
+                                                <!-- Q7 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">7.是否對本公司產品資料及報告滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q7 end -->
+
+                                                <!-- Q8 start -->
+                                                <div class="row card shadow-lg mt-5 px-2">   
+                                                    <div class="col-md-12 mt-4">
+                                                        <label for="" class="form-label">8.是否對本公司售後服務滿意？</label>
+                                                    </div> 
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label">客戶給分：</label>
+                                                            <label for="" class="form-label">
+                                                                <!-- php 動態生成星星數 開始-->
+                                                                <span class="fa fa-star mx-1" id="" style="color: orange;"></span>
+                                                                <!-- php 動態生成星星數 結束-->
+                                                            </label>    
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <label for="" class="form-label mb-0">自評：</label>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                                <label class="form-check-label" for="inlineRadio3">3</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                                                <label class="form-check-label" for="inlineRadio4">4</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                                                <label class="form-check-label" for="inlineRadio5">5</label>
+                                                            </div>   
+                                                        </div>
+                                                    </div>                                                    
+                                                    <div class="col-md-12 my-4">
+                                                        <label for="" class="form-label">客戶改善建議</label>
+                                                        <textarea class="form-control" id="" style="height: 100px" readonly></textarea>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2 mb-4">
+                                                        <label for="" class="form-label">本公司對應措施</label>
+                                                        <textarea class="form-control" placeholder="請輸入對應措施" id="" style="height: 100px"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Q8 end -->
+                                            </section>
+                                            <!-- 客戶滿意度調查 星星卡片結束 -->
+                                            
+                                            
+                                            <!-- 備註 開始 -->
+                                            <section class="container">
+                                                <div class="row my-3">
+                                                    <div class="col-11">
+                                                        <p class="mt-5 h5">備註</p>
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        (1)感謝貴公司常年來對本公司的愛護與關照，今年對貴公司的各項服務本公司虛心自評如上，請參考並不令給予指教。 
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <label for="" class="form-label">比自評低分的項目：</label>
+                                                        <input type="text" class="form-control" name="" id="" aria-describedby="" value="7. 是否對本公司產品資料及報告滿意？">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col-md-12 my-2">
+                                                        (2)希望貴公司本著客觀之要求，於本公司可以提升或改善的地方，請適切表達於「客戶改善建議」欄內。 
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <label for="" class="form-label">比前次調查成績退步的項目：</label>
+                                                        <input type="text" class="form-control" name="" id="" aria-describedby="" value="7. 是否對本公司產品資料及報告滿意？">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col-md-12 my-2">
+                                                        (3)貴公司的寶貴意見本公司會虛心檢討改善，以獲得貴公司的肯定。 
+                                                    </div>
+                                                    <div class="col-md-12 my-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                                繼續保持
+                                                            </label>
+                                                          </div>
+                                                          <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                需納入改善
+                                                            </label>
+                                                          </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            <!-- 備註 結束 -->
+                                    </div>
+                                    <!-- card-body End -->
+                                    <div class="card-footer">
+                                        <section class="container">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <input name="status" class="btn btn-primary btn-lg" value="儲存客戶滿意度調查" type="submit">
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <!-- card-footer End -->
+                                </form><!-- card shadow End -->
+                            </div>
+                        </div>       
+                    </div>
+                    <!--divEdit End-->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy;</span> 
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">您確定要登出嗎？</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">登出以回到登入頁面，或取消登出繼續留在系統。</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary" href="index.php">確定登出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+		<!-- Page level custom scripts -->
+    <script src="../static/js/custom/mobile_toggled.js"></script>
+	<script src="../static/js/demo/datatables-demo.js"></script>
+	<script type="text/javascript" charset="UTF-8">
+        function date_default(){
+            var dateControl = document.querySelector("#Iwrite_data");
+            var fullDate = new Date();
+            var yyyy = fullDate.getFullYear();
+            var MM = (fullDate.getMonth() + 1) >= 10 ? (fullDate.getMonth() + 1) : ("0" + (fullDate.getMonth() + 1));
+            var dd = fullDate.getDate() < 10 ? ("0"+fullDate.getDate()) : fullDate.getDate();
+            var today = yyyy + "-" + MM + "-" + dd;
+            dateControl.value = `${today}`;
+        }
+
+        function star(obj,objName,objValue){
+            let StarQ = objName.substr(0, 7);
+            let stop = Number(objValue)+1;
+            for(i=stop;i<6;i++){
+                let empty= document.querySelector(`#${StarQ}_${i}`);
+                empty.style.color = '#858796';
+            }
+            for(i=1;i<stop;i++) {  
+                let twinkle =document.querySelector(`#${StarQ}_${i}`);
+                twinkle.style.color = 'orange';
+            }
+        }
+
+		function check_all(obj,cName) { 
+			var checkboxs = document.getElementsByClassName(cName); 
+			for(var i=0;i<checkboxs.length;i++){checkboxs[i].checked = obj.checked;} 
+		}
+        function check_delete() {
+	        if (confirm("確定刪除嗎?") == true) {
+		    document.form_List.submit();
+	        } else {
+		        return false;
+	        }
+        }
+	</script>
+</body>
+</html>

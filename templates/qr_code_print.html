@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>銘牌資訊</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    body{
+        font-family: 'Noto Sans TC'; 
+    }
+    table {
+    border-collapse: collapse;
+    font-size:20px; 
+    }
+    th, td {
+        height: 25px;
+        border: 2px solid black;
+        padding: 7px;
+    }
+  .btn{ background-color: #53c22d; width: 150px;height:50px;font-size:18px; border-radius: 10px; border: 0px;}
+  .btn:hover{ background-color:#70FF3E; }
+    </style>
+</head>
+<body>
+<center>
+<table align='center' width='650px' ><tr align='right'><td style='border: 1px solid white;'><a href="#" id="Ch" onclick="LangToggle('Ch');">中文</a>&emsp;<a href="#" onclick="LangToggle('En');" id="En" style="textDecoration:none">Eng</a></td></tr></table>    
+<table style="border:black 3px solid;" id='divList'>
+    <tr style="padding: 20px;border: 1px solid white;"><td style="padding: 20px;border: 1px solid white;">    
+            <table border='1'>
+                <tbody>
+                    <tr>
+                        <td width='155px' class="Lang">產品型號</td>
+                        <td width='130px'>SAF</td>
+                        <td width='155px' class="Lang">馬達功率</td>
+                        <td width='130px'>20HP</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">風量</td>
+                        <td width='130px'>2000CMM</td>
+                        <td width='155px' class="Lang">馬達相</td>
+                        <td width='130px'>3</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">靜壓</td>
+                        <td width='130px'>200mmAq</td>
+                        <td width='155px' class="Lang">馬達極數</td>
+                        <td width='130px'>6</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">轉數</td>
+                        <td width='130px'>300</td>
+                        <td width='155px' class="Lang">馬達電壓</td>
+                        <td width='130px'>480</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">風機培林</td>
+                        <td width='130px'>EER1</td>
+                        <td width='155px' class="Lang">馬達電流</td>
+                        <td width='130px'>280</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">製造日期</td>
+                        <td width='130px'>2022-06-16</td>
+                        <td width='155px' class="Lang">馬達頻率</td>
+                        <td width='130px'>60</td>
+                    </tr>
+                    <tr>
+                        <td colspan='4' style='height:5px;border-left: 1px solid white;border-right: 1px solid white;'></td>
+                    </tr>
+                    <tr>
+                        <td width='155px' class="Lang">風機編號</td>
+                        <td width='130px' colspan='3'>OC209017-2</td>
+                    </tr>
+                </tbody>
+            </table>
+    </td></tr> 
+    <tr style="padding: 20px;style='height:5px;border: 1px solid white;"><td style="padding: 20px;border: 1px solid white;">
+            <table border='1' >
+                <tbody>
+                    <tr height='320px' width='604px'>
+                        <td width='344px' valign=top>
+                            <div style="margin-top:15px;">
+                                <!-- <span><img src="" alt=""  hspace=100 vspace=10></span><br> -->
+                                <div style="margin-top:180px;margin-left:10px">
+                                    <span class="Lang">電話</span>：<span class="Lang">XX-XXXX-XXX</span>
+                                    <br>
+                                    <span><span class="Lang">客服email</span>：info@XXXXXXXX.com</span><br>
+                                    <span><span class="Lang">Line官方帳號</span>：@XXXXXXXX</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td width='260px' align='center'><img id='abc' src=''></td>
+                    </tr>
+                </tbody>
+            </table>
+    </td></tr>
+</table>
+<center>
+<table align='center'width='690px'><tr align='right'><td style='border: 1px solid white;'><button class="btn" type="button" onclick="svg2DataUrl();"><b>下載SVG檔案</b></button> </td></tr></table> 
+  
+
+
+</body>
+<script>
+    function LangToggle(Lang){
+        let LangArr = [];
+        let dataRows = document.querySelectorAll(".Lang");
+        let cToggle = document.getElementById("Ch");
+        let eToggle = document.getElementById("En");
+        if(Lang==='En'){    
+            LangArr = ['Type','Power','Volume','Phases','Static pressure','Pole','RPM','Volt','Bearing','Amps',
+            'DOM','Frequency','Serial No.','Phone','+886 X-XXXX-XXX','e-mail','Line Account'];
+            cToggle.style.textDecoration = "none";
+            eToggle.style.textDecoration = "underline";
+        }
+        else{
+            LangArr = ['產品型號','馬達功率','風量','馬達相','靜壓','馬達極數','轉數','馬達電壓','風機培林','馬達電流',
+            '製造日期','馬達頻率','風機編號','電話','XX-XXXX-XXX','客服email','Line官方帳號'];
+            eToggle.style.textDecoration = "none";
+            cToggle.style.textDecoration = "underline";
+
+        }
+        for (let i = 0; i < dataRows.length; i++) {
+                dataRows[i].textContent = LangArr[i];
+            }  
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+<script>        
+    function svgDataUrlToFile(svgDataUrl, outputFileName) {
+        // parsing SVG Data URL
+        const encodedData = svgDataUrl.substring("data:image/svg+xml;charset=utf-8,".length);
+        const decodedData = decodeURIComponent(encodedData);
+
+        // create Blob obj
+        const blob = new Blob([decodedData], { type: "image/svg+xml" });
+
+        // create downloadLink element
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = outputFileName;
+        console.log(downloadLink);
+        // click downloadLink
+        downloadLink.click();
+    }
+    function svg2DataUrl(){
+            function filter (node) {
+                return (node.tagName !== 'i');
+            }
+            // html to svgURL
+            htmlToImage.toSvg(document.getElementById('divList'), { filter: filter })
+            .then(function (dataUrl) {
+                console.log(dataUrl);
+                const outputFileName = 'SVG';
+                svgDataUrlToFile(dataUrl, outputFileName);
+
+            })
+            .catch(function (error) {
+                console.error('oops, something went wrong!', error);
+            });
+    }
+</script>
+<script>
+    window.addEventListener("load", function(event) {   
+    url=("https://api.qrserver.com/v1/create-qr-code/?data=http://www.gsdweb.com.tw:86/fan_nameplate_disable.php?FDNewsState=disable%26FDNewsIDE=<?php echo $news[0] ?>&amp&size=247x247");
+    // console.log(url);
+    img=document.getElementById("abc");
+    img.setAttribute("src",url); 
+    });
+</script>
+<!-- <script src="../node_modules/dom-to-svg/index" type="text/javascript"></script>
+<script>
+  // 可以使用 dom-to-svg 模組中的函式和方法
+  const { documentToSVG, elementToSVG, inlineResources, formatXML } = window.domToSvg;
+</script> -->
+<script src="
+https://cdn.jsdelivr.net/npm/dom-to-svg@0.12.2/lib/index.min.js
+"></script>
+
+
+</html>
